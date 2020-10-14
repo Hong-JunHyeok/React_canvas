@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Stage, Layer, Rect, Circle } from "react-konva";
+import React from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        // Stage - is a div wrapper
+        // Layer - is an actual 2d canvas element, so you can have several layers inside the stage
+        // Rect and Circle are not DOM elements. They are 2d shapes on canvas
+        <Stage width={window.innerWidth} height={window.innerHeight}>
+            <Layer>
+                <Rect width={50} height={50} fill="red" />
+                <Circle x={200} y={200} stroke="black" radius={50} />
+                <Circle
+                    x={window.innerWidth - 100}
+                    y={window.innerHeight - 100}
+                    stroke="blue"
+                    fill="black"
+                    radius={50}
+                ></Circle>
+            </Layer>
+        </Stage>
+    );
 }
 
 export default App;
