@@ -3,27 +3,23 @@ import "./Canvas.css";
 function Canvas() {
     let canvas; //캔버스
     let canvasRef = createRef(); //캔버스의 DOM값을 가져옴
-
-    const blackButton = createRef();
-    const redButton = createRef();
-    const blueButton = createRef();
-
+    let currentColor;
     let pos = {
         //사용될 좌표값
         drawable: false,
         x: -1,
         y: -1,
     };
-    const [strokeColor, setStrokeColor] = useState(null);
 
     let ctx; //컨텍스트
     useEffect(() => {
         canvas = canvasRef.current;
         ctx = canvas.getContext("2d");
+        ctx.lineCap = "round"; //선의 끝을 둥글게 설정
         canvas.addEventListener("mousedown", initDraw);
         canvas.addEventListener("mousemove", draw);
         canvas.addEventListener("mouseup", finishDraw);
-        canvas.addEventListener("mouseout", finishDraw);
+        canvas.addEventListener("mouseout", draw);
         //각각 캔버스 이벤트에 대한 함수를 지정
     }, []);
 
@@ -37,7 +33,17 @@ function Canvas() {
 
     function changeStrokeColor(e) {
         ctx.strokeStyle = e.target.value;
+        currentColor = e.target.value;
         console.log("changed color", e.target.value);
+    }
+
+    function changeStrokeSize(e) {
+        ctx.lineWidth = e.target.value;
+    }
+
+    function fillCanvas(e) {
+        ctx.fillStyle = currentColor;
+        ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     }
 
     function initDraw(e) {
@@ -72,15 +78,23 @@ function Canvas() {
                 height="800"
                 className="canvas"
             ></canvas>
-            <button onClick={changeStrokeColor} value="black">
-                검은색
-            </button>
-            <button onClick={changeStrokeColor} value="red">
-                빨간색
-            </button>
-            <button onClick={changeStrokeColor} value="blue">
-                파란색
-            </button>
+            <div>
+                <button onClick={changeStrokeColor} value="black">
+                    검은색
+                </button>
+                <button onClick={changeStrokeColor} value="red">
+                    빨간색
+                </button>
+                <button onClick={changeStrokeColor} value="blue">
+                    파란색
+                </button>
+            </div>
+            <div>
+                선 크기 :<input type="range" onChange={changeStrokeSize} />
+            </div>
+            <div>
+                <button onClick={fillCanvas}>색 채우기</button>
+            </div>
         </>
     );
 }
